@@ -1,0 +1,16 @@
+#!/bin/bash
+
+if [ $# -ne 2 ]; then
+    echo "USAGE $(basename $0) EMAIL NAME"
+    echo "Recursively updates git config user.email and user.name."
+    echo -e "\tEMAIL\tThe email of the user to configure."
+    echo -e "\tNAME\tThe user's display name to configure."
+    exit 1
+fi
+
+email="$1"
+name="$2"
+
+git config user.email "$email"
+git config user.name "$name"
+git submodule foreach --recursive bash -c 'git config user.email "'"$email"'"; git config user.name "'"$name"'"; git config --list | grep "user\."'
